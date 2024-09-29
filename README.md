@@ -1,1 +1,1 @@
-# djdcks12-YoungTycoon
+# 영타이쿤 프로젝트
