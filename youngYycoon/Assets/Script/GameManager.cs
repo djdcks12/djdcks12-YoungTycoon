@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Dish m_dish;
 
     LinkedList<Dish> _dishWaitList = new LinkedList<Dish>();
+    Queue<Dish> _dishQueue = new Queue<Dish>();
     public enum CookType 
     {
         Grill,
@@ -52,8 +53,8 @@ public class GameManager : MonoBehaviour
             _ingredientButtons[i].onClick.AddListener(() => OnTouchIngredient(ingredientType));
         }
         ChangeTab(2);
-        _grillController.SetGrill(()=> {_cookType = CookType.Grill; _grillController.SetCookerImage(true); _frierController.SetCookerImage(false);}, (ingredinet) => onAfterCookAction(CookType.Grill, ingredinet));
-        _frierController.SetGrill(()=> {_cookType = CookType.Frier; _grillController.SetCookerImage(false); _frierController.SetCookerImage(true);}, (ingredinet) => onAfterCookAction(CookType.Frier, ingredinet));
+        _grillController.SetGrill(()=> {_cookType = CookType.Grill; _grillController.SetCookerImage(true); _frierController.SetCookerImage(false);}, (ingredinet) => OnAfterCookAction(CookType.Grill, ingredinet));
+        _frierController.SetGrill(()=> {_cookType = CookType.Frier; _grillController.SetCookerImage(false); _frierController.SetCookerImage(true);}, (ingredinet) => OnAfterCookAction(CookType.Frier, ingredinet));
         _customerController.SetCustmoerController();
     }
     void OnTouchIngredient(IngredientType ingredientType)
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    void onAfterCookAction(CookType inMode, IngredientType inIngredientType)
+    void OnAfterCookAction(CookType inMode, IngredientType inIngredientType)
     {
         if(_customerController.SellCustomer((inIngredientType, inMode)))
         {
@@ -76,19 +77,37 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            var dish = Instantiate(m_dish, new Vector3(0,0,0), Quaternion.identity, _dishPlate.transform);
+            var dish = GetDish();
+            dish.gameObject.SetActive(true);
             dish.SetDish((inIngredientType, inMode),() => 
             {
                 if(_customerController.SellCustomer((inIngredientType, inMode)))
                 {
                     _dishWaitList.Remove(dish);
-                    Destroy(dish.gameObject);
+                    ReturnDish(dish);
                 }
             });
             _dishWaitList.AddLast(dish);
         }
     }
-    public void ChangeTab(int index)
+    Dish GetDish()
+    {
+        if(_dishQueue.Count == 0)
+        {
+            var dish = Instantiate(m_dish, new Vector3(0,0,0), Quaternion.identity, _dishPlate.transform);
+            return dish;
+        }
+        else
+        {
+            return _dishQueue.Dequeue();
+        }
+    }
+    void ReturnDish(Dish inDish)
+    {
+        inDish.gameObject.SetActive(false);
+        _dishQueue.Enqueue(inDish);
+    }
+    void ChangeTab(int index)
     {
         for (int i = 0; i < _tabs.Length; i++)
         {
@@ -102,9 +121,10 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public static string dishName((IngredientType, CookType)inDishType)
+
+    public static string GetIngredientName(IngredientType inIngredientType)
     {
-        string ingredient = inDishType.Item1 switch
+        return inIngredientType switch            
         {
             IngredientType.Chicken => "닭",
             IngredientType.Pork => "돼지",
@@ -120,6 +140,11 @@ public class GameManager : MonoBehaviour
             IngredientType.Pigeon => "비둘기",
             _ => "고기"
         };
+    }
+
+    public static string DishName((IngredientType, CookType)inDishType)
+    {
+        string ingredient = GetIngredientName(inDishType.Item1);
         string cook = inDishType.Item2 switch
         {
             CookType.Grill => "구운",

@@ -9,6 +9,8 @@ public class CustomerController : MonoBehaviour
     [SerializeField] Customer m_customer;
     readonly int maxCustomer = 4;
     List<Customer> _customerList = new List<Customer>();
+    Queue<Customer> _customerQueue = new Queue<Customer>();
+
     public void SetCustmoerController()
     {
         Observable.Interval(TimeSpan.FromSeconds(3)).Subscribe(_ => GenerateCustomer()).AddTo(this.gameObject);
@@ -20,15 +22,29 @@ public class CustomerController : MonoBehaviour
         {
             GameManager.IngredientType randomIngredientType = (GameManager.IngredientType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(GameManager.IngredientType)).Length);
             GameManager.CookType randomCookType = (GameManager.CookType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(GameManager.CookType)).Length);
-            var customer = Instantiate(m_customer, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+            var customer = GetCustomer();
             customer.SetCustomer((randomIngredientType, randomCookType), () => LeaveCustomer(customer));
+            customer.gameObject.SetActive(true);
             _customerList.Add(customer);
         }
     }
+    Customer GetCustomer()
+    {
+        if(_customerQueue.Count == 0)
+        {
+            var customer = Instantiate(m_customer, new Vector3(0,0,0), Quaternion.identity, this.transform);
+            return customer;
+        }
+        else
+        {
+            return _customerQueue.Dequeue();
+        }
+    }
+
     void LeaveCustomer(Customer inCustomer)
     {
         _customerList.Remove(inCustomer);
-        Destroy(inCustomer.gameObject);
+        inCustomer.gameObject.SetActive(false);
     }
     public bool SellCustomer((GameManager.IngredientType, GameManager.CookType) inDishType)
     {

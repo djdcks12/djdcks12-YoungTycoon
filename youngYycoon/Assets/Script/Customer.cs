@@ -22,7 +22,7 @@ public class Customer : MonoBehaviour
         _leaveCallback = inLeaveCallback;
         _leftSec = 0;
         _maxSec = 100;
-        _txtDish.text = GameManager.dishName(inDishType);
+        _txtDish.text = GameManager.DishName(inDishType);
 
         _timer = Observable.Interval(System.TimeSpan.FromSeconds(0.3)).Subscribe(_ => Wait()).AddTo(this.gameObject);
     }

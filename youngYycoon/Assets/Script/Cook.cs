@@ -12,6 +12,7 @@ public class Cook : MonoBehaviour
     [SerializeField] Button _btnCompletedCook;
     UnityAction _afterCookAction;
     private IDisposable timer;
+
     int _leftSec = 0;
     public enum Status
     {
@@ -29,22 +30,8 @@ public class Cook : MonoBehaviour
     {
         _status = Status.Cooking;
         _afterCookAction = inAfterCookAction;
-        _txtIngredient.text = inIngredinetType switch
-        {
-            GameManager.IngredientType.Chicken => "닭",
-            GameManager.IngredientType.Pork => "돼지",
-            GameManager.IngredientType.Camel => "낙타",
-            GameManager.IngredientType.Eagle => "독수리",
-            GameManager.IngredientType.Beef => "소",
-            GameManager.IngredientType.Lamb => "양",
-            GameManager.IngredientType.Bat => "박쥐",
-            GameManager.IngredientType.MeerKat => "미어캣",
-            GameManager.IngredientType.DesertFox => "여우",
-            GameManager.IngredientType.Alpaca => "알파카",
-            GameManager.IngredientType.HorseFlesh => "말",
-            GameManager.IngredientType.Pigeon => "비둘기",
-            _ => "고기"
-        };
+        _txtIngredient.text = GameManager.GetIngredientName(inIngredinetType);
+
         _leftSec = 15;
         _leftSeconds.text = String.Format("{0}s", _leftSec);
 
