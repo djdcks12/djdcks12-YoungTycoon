@@ -1133,7 +1133,7 @@ MonoBehaviour:
   - {fileID: 509202719}
   - {fileID: 210303956}
   _dishPlate: {fileID: 285011624}
-  m_dish: {fileID: 5518387103611146229, guid: 07e8a1191ced292478d26c21f668d3d8, type: 3}
+  _dishPrefab: {fileID: 5518387103611146229, guid: 07e8a1191ced292478d26c21f668d3d8, type: 3}
 --- !u!4 &439043516
 Transform:
   m_ObjectHideFlags: 0

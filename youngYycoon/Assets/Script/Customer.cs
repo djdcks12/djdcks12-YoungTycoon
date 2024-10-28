@@ -6,17 +6,21 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using CooKing;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class Customer : MonoBehaviour
 {
     [SerializeField] TMP_Text _txtDish;
-    [SerializeField] Image _custmoerImage;
-    (GameManager.IngredientType, GameManager.CookType) _dishType;
+    [SerializeField] Image _customerImage;
+    (IngredientType, CookType) _dishType;
     UnityAction _leaveCallback;
     int _leftSec = 0;
     int _maxSec = 0;
-    IDisposable _timer;
-    public void SetCustomer((GameManager.IngredientType, GameManager.CookType) inDishType, UnityAction inLeaveCallback)
+    CancellationTokenSource _cancellationTokenSource;
+
+    public void SetCustomer((IngredientType, CookType) inDishType, UnityAction inLeaveCallback)
     {
         _dishType = inDishType;
         _leaveCallback = inLeaveCallback;
@@ -24,22 +28,31 @@ public class Customer : MonoBehaviour
         _maxSec = 100;
         _txtDish.text = GameManager.DishName(inDishType);
 
-        _timer = Observable.Interval(System.TimeSpan.FromSeconds(0.3)).Subscribe(_ => Wait()).AddTo(this.gameObject);
+        _cancellationTokenSource = new CancellationTokenSource();
+        WaitAsync(_cancellationTokenSource.Token).Forget();
     }
-    void Wait()
+    private async UniTaskVoid WaitAsync(CancellationToken token)
     {
-        _leftSec++;
-        _custmoerImage.color = new Color(1, 1 - ((float)_leftSec/_maxSec), 1 - ((float)_leftSec/_maxSec));
-        if(_leftSec >= _maxSec)
+        while (_leftSec < _maxSec)
         {
-            _leaveCallback?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(0.3), cancellationToken: token);
+            _leftSec++;
+            _customerImage.color = new Color(1, 1 - ((float)_leftSec / _maxSec), 1 - ((float)_leftSec / _maxSec));
         }
+
+        _leaveCallback?.Invoke();
     }
+
+    public void ReturnPool()
+    {
+        _cancellationTokenSource?.Cancel();
+    }
+
     public void BuyDish(UnityAction inLeaveCallback)
     {
         inLeaveCallback?.Invoke();
     }
-    public (GameManager.IngredientType, GameManager.CookType) GetDishType()
+    public (IngredientType, CookType) GetDishType()
     {
         return _dishType;
     }

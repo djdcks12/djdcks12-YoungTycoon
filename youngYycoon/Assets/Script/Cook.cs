@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UniRx;
+using CooKing;
 
 public class Cook : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class Cook : MonoBehaviour
         return _status;
     }
 
-    public void StartCooking(GameManager.IngredientType inIngredinetType, UnityAction inAfterCookAction)
+    public void StartCooking(IngredientType inIngredinetType, UnityAction inAfterCookAction)
     {
         _status = Status.Cooking;
         _afterCookAction = inAfterCookAction;

@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using CooKing;
 
 public class CookerController : MonoBehaviour
 {
     [SerializeField] Button _grillButton;
     [SerializeField] Cook[] _cooks;
     [SerializeField] Image _cookerImage;
-    UnityAction<GameManager.IngredientType> _afterCookAction;
+    UnityAction<IngredientType> _afterCookAction;
 
-    public void SetGrill(UnityAction inGrillTouchEvent, UnityAction<GameManager.IngredientType> inAfterCookAction)
+    public void SetGrill(UnityAction inGrillTouchEvent, UnityAction<IngredientType> inAfterCookAction)
     {
         _grillButton.onClick.AddListener(inGrillTouchEvent);
         _afterCookAction = inAfterCookAction;
@@ -21,7 +22,7 @@ public class CookerController : MonoBehaviour
             _cooks[i].gameObject.SetActive(false);
         }
     }
-    public void OnTouchIngredient(GameManager.IngredientType ingredientType)
+    public void OnTouchIngredient(IngredientType ingredientType)
     {
         for(int i = 0; i < _cooks.Length; i++)
         {

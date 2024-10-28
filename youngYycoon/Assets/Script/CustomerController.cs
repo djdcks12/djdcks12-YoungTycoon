@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UniRx;
+using CooKing;
 
 public class CustomerController : MonoBehaviour
 {
@@ -20,8 +21,8 @@ public class CustomerController : MonoBehaviour
         bool isGenerate = UnityEngine.Random.Range(0, 2) == 0;
         if(_customerList.Count < maxCustomer && isGenerate)
         {
-            GameManager.IngredientType randomIngredientType = (GameManager.IngredientType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(GameManager.IngredientType)).Length);
-            GameManager.CookType randomCookType = (GameManager.CookType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(GameManager.CookType)).Length);
+            IngredientType randomIngredientType = (IngredientType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(IngredientType)).Length);
+            CookType randomCookType = (CookType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(CookType)).Length);
             var customer = GetCustomer();
             customer.SetCustomer((randomIngredientType, randomCookType), () => LeaveCustomer(customer));
             customer.gameObject.SetActive(true);
@@ -43,10 +44,12 @@ public class CustomerController : MonoBehaviour
 
     void LeaveCustomer(Customer inCustomer)
     {
+        _customerQueue.Enqueue(inCustomer);
         _customerList.Remove(inCustomer);
+        inCustomer.ReturnPool();
         inCustomer.gameObject.SetActive(false);
     }
-    public bool SellCustomer((GameManager.IngredientType, GameManager.CookType) inDishType)
+    public bool SellCustomer((IngredientType, CookType) inDishType)
     {
         for(int i = 0; i < _customerList.Count; i++)
         {
