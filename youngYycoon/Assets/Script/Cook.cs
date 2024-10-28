@@ -3,8 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using UniRx;
 using CooKing;
+using TimeExtension;
 
 public class Cook : MonoBehaviour
 {
@@ -12,7 +12,6 @@ public class Cook : MonoBehaviour
     [SerializeField] TMP_Text _leftSeconds;
     [SerializeField] Button _btnCompletedCook;
     UnityAction _afterCookAction;
-    private IDisposable timer;
 
     int _leftSec = 0;
     public enum Status
@@ -36,7 +35,7 @@ public class Cook : MonoBehaviour
         _leftSec = 15;
         _leftSeconds.text = String.Format("{0}s", _leftSec);
 
-        timer = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(_ => OnTimer()).AddTo(this.gameObject);
+        TimeManager.Instance.RegisterAction(1, OnTimer);
         _btnCompletedCook.onClick.AddListener(OnTouchCompletedCook);
     }
     void OnTimer()
@@ -47,7 +46,7 @@ public class Cook : MonoBehaviour
         {
             _status = Status.Completed;
             _leftSeconds.text = "완료";
-            timer.Dispose();
+            TimeManager.Instance.UnregisterAction(1,OnTimer);
         }
     }
     public void OnTouchCompletedCook()

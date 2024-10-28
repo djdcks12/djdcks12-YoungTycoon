@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UniRx;
 using CooKing;
+using TimeExtension;
 
 public class CustomerController : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class CustomerController : MonoBehaviour
 
     public void SetCustmoerController()
     {
-        Observable.Interval(TimeSpan.FromSeconds(3)).Subscribe(_ => GenerateCustomer()).AddTo(this.gameObject);
+        TimeManager.Instance.RegisterAction(3, GenerateCustomer);
     }
     void GenerateCustomer()
     {
@@ -57,12 +57,15 @@ public class CustomerController : MonoBehaviour
             {
                 _customerList[i].BuyDish(()=>
                 {
-                    Destroy(_customerList[i].gameObject);
-                    _customerList.RemoveAt(i);
+                    LeaveCustomer(_customerList[i]);
                 });
                 return true;
             }
         }
         return false;
+    }
+    public void OnDestroy()
+    {
+        TimeManager.Instance.UnregisterAction(3, GenerateCustomer);
     }
 }
