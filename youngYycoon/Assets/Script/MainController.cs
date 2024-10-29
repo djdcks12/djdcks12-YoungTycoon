@@ -77,7 +77,7 @@ namespace  CooKing
                 InitializeIngredientButtons();
                 InitializeCookers();
                 Viewer.Initialize(DefaultTabIndex);
-                ControllerManager.Instance.SendMessage<MainController>(new ISetCustmoerParm());
+                ControllerManager.Instance.SendMessage<CustomerController>(new ISetCustmoerParm());
             }
             if(param is IResponseSellCustomerParm)
             {

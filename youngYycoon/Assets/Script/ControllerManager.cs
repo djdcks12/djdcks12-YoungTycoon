@@ -17,7 +17,7 @@ public class ControllerManager : SingletoneClass<ControllerManager>
 {
     Dictionary<Type, Controller> _controllers = new Dictionary<Type, Controller>();
 
-    public C Get<C>() where C : Controller, new()
+    C Get<C>() where C : Controller, new()
     {
         var type = typeof(C);
         if (_controllers.ContainsKey(type))
