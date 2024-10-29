@@ -14,7 +14,7 @@ public class Dish : MonoBehaviour
     public void SetDish((IngredientType, CookType) inDishType, UnityAction inSellAction)
     {
         _dishType = inDishType;
-        _txtDish.text = GameManager.DishName(inDishType);
+        _txtDish.text = MainController.DishName(inDishType);
         _btnSell.onClick.AddListener(inSellAction);
     }
     public (IngredientType, CookType) GetDishType()

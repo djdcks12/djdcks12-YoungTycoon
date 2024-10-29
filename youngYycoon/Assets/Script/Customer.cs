@@ -26,7 +26,7 @@ public class Customer : MonoBehaviour
         _leaveCallback = inLeaveCallback;
         _leftSec = 0;
         _maxSec = 100;
-        _txtDish.text = GameManager.DishName(inDishType);
+        _txtDish.text = MainController.DishName(inDishType);
 
         _cancellationTokenSource = new CancellationTokenSource();
         WaitAsync(_cancellationTokenSource.Token).Forget();

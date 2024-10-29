@@ -5,55 +5,16 @@ using UnityEngine;
 
 namespace TimeExtension
 {
-    public class TimeManager : MonoBehaviour
+    public class TimeManager : MonoSingletonClass<TimeManager>
     {
-        private static TimeManager m_instance;
-        private static readonly object lockObj = new object();
-        public static TimeManager Instance
-        {
-            get
-            {
-                if (m_instance == null)
-                {
-                    lock (lockObj)
-                    {
-                        // type으로 찾음
-                        var findObjects = FindObjectsByType<TimeManager>(FindObjectsSortMode.None);
-
-                        if (findObjects.Length <= 0)
-                        {
-                            GameObject TimeManagerObject = new GameObject(String.Format("{0}", typeof(TimeManager).FullName));
-
-                            m_instance = TimeManagerObject.AddComponent<TimeManager>();
-
-                            DontDestroyOnLoad(TimeManagerObject);
-                        }
-                        else
-                        {
-                            m_instance = findObjects[0];
-                        }
-                    }
-                }
-
-                return m_instance;
-            }
-        }
         private Dictionary<int, List<Action>> actions = new Dictionary<int, List<Action>>();
         private int tickCount = 0;
         private const int MaxTickCount = int.MaxValue - 1000; // 오버플로우 방지를 위한 최대 값
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (m_instance == null)
-            {
-                m_instance = this;
-                DontDestroyOnLoad(gameObject);
-                StartTimer();
-            }
-            else if (m_instance != this)
-            {
-                Destroy(gameObject);
-            }
+            base.Awake();
+            StartTimer();
         }
 
         private void StartTimer()

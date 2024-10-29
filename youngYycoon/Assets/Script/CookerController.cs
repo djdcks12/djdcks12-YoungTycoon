@@ -5,37 +5,79 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using CooKing;
 
-public class CookerController : MonoBehaviour
+public class ISetGrillParm:IControllerParam
 {
-    [SerializeField] Button _grillButton;
-    [SerializeField] Cook[] _cooks;
-    [SerializeField] Image _cookerImage;
-    UnityAction<IngredientType> _afterCookAction;
+    public UnityAction inGrillTouchEvent;
+    public UnityAction<IngredientType> inAfterCookAction;
+}
 
-    public void SetGrill(UnityAction inGrillTouchEvent, UnityAction<IngredientType> inAfterCookAction)
+public class ITouchIngredientParam:IControllerParam
+{
+    public IngredientType ingredientType;
+}
+public class ISetCookerImageParam:IControllerParam
+{
+    public bool isSelect;
+}
+
+public class CookerController : Controller
+{
+    CookerViwer _cookViwer;
+    CookerModel _cookModel;
+
+    CookerViwer Viewer
     {
-        _grillButton.onClick.AddListener(inGrillTouchEvent);
-        _afterCookAction = inAfterCookAction;
-        
-        for(int i = 0; i < _cooks.Length; i++)
+        get
         {
-            _cooks[i].gameObject.SetActive(false);
+            if (_cookViwer == null)
+                _cookViwer = GetViewer<CookerViwer>();
+            return _cookViwer;
         }
     }
-    public void OnTouchIngredient(IngredientType ingredientType)
+
+    CookerModel Model
     {
-        for(int i = 0; i < _cooks.Length; i++)
+        get
         {
-            if(_cooks[i].GetStatus() == Cook.Status.Empty)
-            {
-                _cooks[i].gameObject.SetActive(true);
-                _cooks[i].StartCooking(ingredientType, () => _afterCookAction(ingredientType));
-                break;
-            }
+            if (_cookModel == null)
+                _cookModel = GetModel<CookerModel>();
+            return _cookModel;
         }
     }
-    public void SetCookerImage(bool isSelect)
+
+    protected override void OnRecv_SendMessage(IControllerParam param)
     {
-        _cookerImage.color = isSelect ? Color.gray : Color.white;
+        if(param is ISetGrillParm)
+        {
+            var setGrillParm = param as ISetGrillParm;
+            SetGrill(setGrillParm.inGrillTouchEvent, setGrillParm.inAfterCookAction);
+        }
+        else if(param is ITouchIngredientParam)
+        {
+            var touchIngredientParam = param as ITouchIngredientParam;
+            TouchIngredient(touchIngredientParam.ingredientType);
+        }
+        else if(param is ISetCookerImageParam)
+        {
+            var setCookerImageParam = param as ISetCookerImageParam;
+            SetCookerImage(setCookerImageParam.isSelect);
+        }
+    }
+
+    void SetGrill(UnityAction inGrillTouchEvent, UnityAction<IngredientType> inAfterCookAction)
+    {
+        Model._afterCookAction = inAfterCookAction;
+        Viewer.SetGrillButtonEvent(inGrillTouchEvent);
+        Viewer.InitGrill();
+    }
+    
+    void TouchIngredient(IngredientType ingredientType)
+    {
+        Viewer.OnTouchIngredient(ingredientType, () => GetModel<CookerModel>()._afterCookAction(ingredientType));
+    }
+
+    void SetCookerImage(bool isSelect)
+    {
+        Viewer.OnSetCookerImage(isSelect);
     }
 }

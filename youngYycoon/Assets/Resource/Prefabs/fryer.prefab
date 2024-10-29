@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4837620531473302949}
   - component: {fileID: 6118075618252375379}
   - component: {fileID: 5218629553824565291}
-  - component: {fileID: 6248476376680676259}
   m_Layer: 5
   m_Name: fryer
   m_TagString: Untagged
@@ -124,23 +123,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6248476376680676259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3140816291978340463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c47e6f9f46ac94a409761bfbba4343c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grillButton: {fileID: 5218629553824565291}
-  _cooks:
-  - {fileID: 8136795538223156922}
-  - {fileID: 9099835021324825869}
-  _cookerImage: {fileID: 6118075618252375379}
 --- !u!1 &7509295053687317400
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,15 +231,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -283,6 +267,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8297867849514497741}
     m_Modifications:
+    - target: {fileID: 3456021216977456754, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 5747428748624221478, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -367,6 +355,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CooK
       objectReference: {fileID: 0}
+    - target: {fileID: 8974384886325847757, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -377,17 +369,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5747428748624221478, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
   m_PrefabInstance: {fileID: 1512553070279260153}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8136795538223156922 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7211986413140425027, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
-  m_PrefabInstance: {fileID: 1512553070279260153}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87bcac5817c7eb2489dadf77047e05b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1900242875020741710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -396,6 +377,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8297867849514497741}
     m_Modifications:
+    - target: {fileID: 3456021216977456754, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 5747428748624221478, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -480,6 +465,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CooK (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8974384886325847757, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -490,14 +479,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5747428748624221478, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
   m_PrefabInstance: {fileID: 1900242875020741710}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9099835021324825869 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7211986413140425027, guid: 517243aa0cf1ad54fb11a94df959c61b, type: 3}
-  m_PrefabInstance: {fileID: 1900242875020741710}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87bcac5817c7eb2489dadf77047e05b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -30,7 +30,7 @@ public class Cook : MonoBehaviour
     {
         _status = Status.Cooking;
         _afterCookAction = inAfterCookAction;
-        _txtIngredient.text = GameManager.GetIngredientName(inIngredinetType);
+        _txtIngredient.text = MainController.GetIngredientName(inIngredinetType);
 
         _leftSec = 15;
         _leftSeconds.text = String.Format("{0}s", _leftSec);
