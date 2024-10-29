@@ -5,6 +5,6 @@ public class GameManager : MonoBehaviour
 {
     void Start()
     {
-        ControllerManager.Instance.SendMessage<MainController>(new ISetViwerParam());
+        ControllerManager.Instance.SendMessage<MainController>(new InitMainParm());
     }
 }
