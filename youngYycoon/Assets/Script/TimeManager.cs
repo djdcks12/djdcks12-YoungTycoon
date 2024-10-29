@@ -5,15 +5,14 @@ using UnityEngine;
 
 namespace TimeExtension
 {
-    public class TimeManager : MonoSingletonClass<TimeManager>
+    public class TimeManager : SingletoneClass<TimeManager>
     {
         private Dictionary<int, List<Action>> actions = new Dictionary<int, List<Action>>();
         private int tickCount = 0;
         private const int MaxTickCount = int.MaxValue - 1000; // 오버플로우 방지를 위한 최대 값
 
-        protected override void Awake()
+        protected override void Init()
         {
-            base.Awake();
             StartTimer();
         }
 
